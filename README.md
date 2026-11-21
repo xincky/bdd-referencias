@@ -19,7 +19,7 @@ centralizada que resuelve la misma tarea.
 
 ## Requisitos
 
-- Linux con PostgreSQL 16 (binarios en `/usr/lib/postgresql/16/bin`, con la extensión `postgres_fdw`).
+- Linux con PostgreSQL 18 (binarios en `/usr/lib/postgresql/18/bin`, con la extensión `postgres_fdw`).
 - Python 3.10 o superior y `pip install psycopg2-binary`.
 - Un usuario del sistema distinto de root para los servidores (por ejemplo, `pg`).
 
