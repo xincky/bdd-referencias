@@ -1,0 +1,10 @@
+{
+  "ip": {
+    "CUS": "IP_PUBLICA_DE_n_cus",
+    "APU": "IP_PUBLICA_DE_n_apu",
+    "MDD": "IP_PUBLICA_DE_n_mdd"
+  },
+  "password": "MiClave2026",
+  "ejecutar_desde": "CUS",
+  "central_db": "central"
+}

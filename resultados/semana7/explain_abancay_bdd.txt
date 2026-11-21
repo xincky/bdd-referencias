@@ -1,0 +1,12 @@
+SELECT id_ref, cie10, prioridad, edad, sexo, fecha_envio FROM referencia
+ WHERE region_origen = 'APU' AND eess_destino = 4 AND estado = 'ENVIADA'
+ ORDER BY fecha_envio LIMIT 50
+
+Limit
+  ->  Sort
+        Sort Key: referencia.fecha_envio
+        ->  Bitmap Heap Scan on referencia
+              Recheck Cond: ((eess_destino = 4) AND (estado = 'ENVIADA'::text))
+              Filter: (region_origen = 'APU'::bpchar)
+              ->  Bitmap Index Scan on referencia_eess_destino_estado_idx
+                    Index Cond: ((eess_destino = 4) AND (estado = 'ENVIADA'::text))

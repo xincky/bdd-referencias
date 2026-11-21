@@ -1,0 +1,168 @@
+{
+  "N_ops": 50,
+  "rtts_ms": [
+    20,
+    50,
+    100
+  ],
+  "conteos": {
+    "Cusco": {
+      "establecimiento": 126,
+      "referencia": 20100,
+      "contrarreferencia": 14028,
+      "cupo": 15
+    },
+    "Apurímac": {
+      "establecimiento": 126,
+      "referencia": 6900,
+      "contrarreferencia": 4833,
+      "cupo": 10
+    },
+    "Madre de Dios": {
+      "establecimiento": 126,
+      "referencia": 3000,
+      "contrarreferencia": 2119,
+      "cupo": 5
+    },
+    "Central": {
+      "establecimiento": 126,
+      "referencia": 30000,
+      "contrarreferencia": 20980,
+      "cupo": 30
+    }
+  },
+  "E0": {
+    "suma_fragmentos": 30000,
+    "total_global": 30000,
+    "total_central": 30000,
+    "filas_duplicadas": 0,
+    "reconstruccion_identica": true,
+    "contrarreferencias_fuera_de_su_nodo": 0,
+    "por_region": {
+      "APU": 6900,
+      "CUS": 20100,
+      "MDD": 3000
+    }
+  },
+  "planes": {
+    "abancay_bdd": "Limit\n  ->  Sort\n        Sort Key: referencia.fecha_envio\n        ->  Bitmap Heap Scan on referencia\n              Recheck Cond: ((eess_destino = 4) AND (estado = 'ENVIADA'::text))\n              Filter: (region_origen = 'APU'::bpchar)\n              ->  Bitmap Index Scan on referencia_eess_destino_estado_idx\n                    Index Cond: ((eess_destino = 4) AND (estado = 'ENVIADA'::text))",
+    "cusco_fdw": "Limit\n  Output: referencia.id_ref, referencia.region_origen, referencia.cie10, referencia.prioridad, referencia.fecha_envio\n  ->  Sort\n        Output: referencia.id_ref, referencia.region_origen, referencia.cie10, referencia.prioridad, referencia.fecha_envio\n        Sort Key: referencia.fecha_envio\n        ->  Append\n              ->  Async Foreign Scan on fdw_apu.referencia referencia_1\n                    Output: referencia_1.id_ref, referencia_1.region_origen, referencia_1.cie10, referencia_1.prioridad, referencia_1.fecha_envio\n                    Remote SQL: SELECT id_ref, region_origen, cie10, prioridad, fecha_envio FROM apu.referencia WHERE ((region_destino = 'CUS')) AND ((estado = 'ENVIADA'))\n              ->  Bitmap Heap Scan on cus.referencia referencia_2\n                    Output: referencia_2.id_ref, referencia_2.region_origen, referencia_2.cie10, referencia_2.prioridad, referencia_2.fecha_envio\n                    Recheck Cond: ((referencia_2.region_destino = 'CUS'::bpchar) AND (referencia_2.estado = 'ENVIADA'::text))\n                    ->  Bitmap Index Scan on referencia_region_destino_estado_idx\n                          Index Cond: ((referencia_2.region_destino = 'CUS'::bpchar) AND (referencia_2.estado = 'ENVIADA'::text))\n              ->  Async Foreign Scan on fdw_mdd.referencia referencia_3\n                    Output: referencia_3.id_ref, referencia_3.region_origen, referencia_3.cie10, referencia_3.prioridad, referencia_3.fecha_envio\n                    Remote SQL: SELECT id_ref, region_origen, cie10, prioridad, fecha_envio FROM mdd.referencia WHERE ((region_destino = 'CUS')) AND ((estado = 'ENVIADA'))",
+    "cusco_replica": "Limit\n  ->  Sort\n        Sort Key: \"*SELECT* 1\".fecha_envio\n        ->  Append\n              ->  Subquery Scan on \"*SELECT* 1\"\n                    ->  Bitmap Heap Scan on referencia referencia_2\n                          Recheck Cond: ((region_destino = 'CUS'::bpchar) AND (estado = 'ENVIADA'::text))\n                          ->  Bitmap Index Scan on referencia_region_destino_estado_idx\n                                Index Cond: ((region_destino = 'CUS'::bpchar) AND (estado = 'ENVIADA'::text))\n              ->  Bitmap Heap Scan on referencia\n                    Recheck Cond: (estado = 'ENVIADA'::text)\n                    ->  Bitmap Index Scan on referencia_estado_idx\n                          Index Cond: (estado = 'ENVIADA'::text)\n              ->  Bitmap Heap Scan on referencia referencia_1\n                    Recheck Cond: (estado = 'ENVIADA'::text)\n                    ->  Bitmap Index Scan on referencia_estado_idx\n                          Index Cond: (estado = 'ENVIADA'::text)"
+  },
+  "tiempos": {
+    "rtt20": {
+      "ping_wan": {
+        "n": 50,
+        "p50": 21.09,
+        "p95": 22.05,
+        "media": 21.19
+      },
+      "abancay_bdd": {
+        "n": 50,
+        "p50": 0.51,
+        "p95": 0.64,
+        "media": 0.48
+      },
+      "abancay_central": {
+        "n": 50,
+        "p50": 21.39,
+        "p95": 21.96,
+        "media": 21.48
+      },
+      "cusco_replica": {
+        "n": 50,
+        "p50": 0.81,
+        "p95": 0.92,
+        "media": 0.82
+      },
+      "cusco_fdw": {
+        "n": 50,
+        "p50": 191.23,
+        "p95": 195.42,
+        "media": 191.71
+      },
+      "cusco_central": {
+        "n": 50,
+        "p50": 0.72,
+        "p95": 1.16,
+        "media": 0.8
+      }
+    },
+    "rtt50": {
+      "ping_wan": {
+        "n": 50,
+        "p50": 51.26,
+        "p95": 52.09,
+        "media": 51.34
+      },
+      "abancay_bdd": {
+        "n": 50,
+        "p50": 0.26,
+        "p95": 0.36,
+        "media": 0.27
+      },
+      "abancay_central": {
+        "n": 50,
+        "p50": 51.97,
+        "p95": 53.22,
+        "media": 52.14
+      },
+      "cusco_replica": {
+        "n": 50,
+        "p50": 0.92,
+        "p95": 1.38,
+        "media": 0.97
+      },
+      "cusco_fdw": {
+        "n": 50,
+        "p50": 464.84,
+        "p95": 469.35,
+        "media": 465.22
+      },
+      "cusco_central": {
+        "n": 50,
+        "p50": 0.78,
+        "p95": 0.88,
+        "media": 0.79
+      }
+    },
+    "rtt100": {
+      "ping_wan": {
+        "n": 50,
+        "p50": 101.67,
+        "p95": 102.56,
+        "media": 101.8
+      },
+      "abancay_bdd": {
+        "n": 50,
+        "p50": 0.53,
+        "p95": 0.89,
+        "media": 0.59
+      },
+      "abancay_central": {
+        "n": 50,
+        "p50": 102.47,
+        "p95": 103.6,
+        "media": 102.65
+      },
+      "cusco_replica": {
+        "n": 50,
+        "p50": 1.66,
+        "p95": 2.54,
+        "media": 1.77
+      },
+      "cusco_fdw": {
+        "n": 50,
+        "p50": 918.72,
+        "p95": 923.7,
+        "media": 919.2
+      },
+      "cusco_central": {
+        "n": 50,
+        "p50": 0.78,
+        "p95": 1.15,
+        "media": 0.87
+      }
+    }
+  }
+}

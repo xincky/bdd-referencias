@@ -1,0 +1,20 @@
+SELECT id_ref, region_origen, cie10, prioridad, fecha_envio FROM bandeja_cus
+ WHERE estado = 'ENVIADA' ORDER BY fecha_envio LIMIT 100
+
+Limit
+  ->  Sort
+        Sort Key: "*SELECT* 1".fecha_envio
+        ->  Append
+              ->  Subquery Scan on "*SELECT* 1"
+                    ->  Bitmap Heap Scan on referencia referencia_2
+                          Recheck Cond: ((region_destino = 'CUS'::bpchar) AND (estado = 'ENVIADA'::text))
+                          ->  Bitmap Index Scan on referencia_region_destino_estado_idx
+                                Index Cond: ((region_destino = 'CUS'::bpchar) AND (estado = 'ENVIADA'::text))
+              ->  Bitmap Heap Scan on referencia
+                    Recheck Cond: (estado = 'ENVIADA'::text)
+                    ->  Bitmap Index Scan on referencia_estado_idx
+                          Index Cond: (estado = 'ENVIADA'::text)
+              ->  Bitmap Heap Scan on referencia referencia_1
+                    Recheck Cond: (estado = 'ENVIADA'::text)
+                    ->  Bitmap Index Scan on referencia_estado_idx
+                          Index Cond: (estado = 'ENVIADA'::text)

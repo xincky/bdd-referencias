@@ -1,0 +1,20 @@
+SELECT id_ref, region_origen, cie10, prioridad, fecha_envio FROM referencia
+ WHERE region_destino = 'CUS' AND estado = 'ENVIADA' ORDER BY fecha_envio LIMIT 100
+
+Limit
+  Output: referencia.id_ref, referencia.region_origen, referencia.cie10, referencia.prioridad, referencia.fecha_envio
+  ->  Sort
+        Output: referencia.id_ref, referencia.region_origen, referencia.cie10, referencia.prioridad, referencia.fecha_envio
+        Sort Key: referencia.fecha_envio
+        ->  Append
+              ->  Async Foreign Scan on fdw_apu.referencia referencia_1
+                    Output: referencia_1.id_ref, referencia_1.region_origen, referencia_1.cie10, referencia_1.prioridad, referencia_1.fecha_envio
+                    Remote SQL: SELECT id_ref, region_origen, cie10, prioridad, fecha_envio FROM apu.referencia WHERE ((region_destino = 'CUS')) AND ((estado = 'ENVIADA'))
+              ->  Bitmap Heap Scan on cus.referencia referencia_2
+                    Output: referencia_2.id_ref, referencia_2.region_origen, referencia_2.cie10, referencia_2.prioridad, referencia_2.fecha_envio
+                    Recheck Cond: ((referencia_2.region_destino = 'CUS'::bpchar) AND (referencia_2.estado = 'ENVIADA'::text))
+                    ->  Bitmap Index Scan on referencia_region_destino_estado_idx
+                          Index Cond: ((referencia_2.region_destino = 'CUS'::bpchar) AND (referencia_2.estado = 'ENVIADA'::text))
+              ->  Async Foreign Scan on fdw_mdd.referencia referencia_3
+                    Output: referencia_3.id_ref, referencia_3.region_origen, referencia_3.cie10, referencia_3.prioridad, referencia_3.fecha_envio
+                    Remote SQL: SELECT id_ref, region_origen, cie10, prioridad, fecha_envio FROM mdd.referencia WHERE ((region_destino = 'CUS')) AND ((estado = 'ENVIADA'))

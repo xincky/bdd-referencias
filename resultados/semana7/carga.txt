@@ -1,0 +1,18 @@
+Datos cargados (conteo por nodo)
+
+Nodo             establecimiento  referencia (fragmento)  contrarreferencia   cupo
+Cusco                        126                   20100              14028     15
+Apurímac                     126                    6900               4833     10
+Madre de Dios                126                    3000               2119      5
+Central                      126                   30000              20980     30
+
+Desde el nodo Apurímac: SELECT region_origen, count(*) FROM referencia GROUP BY 1
+  APU: 6900
+  CUS: 20100
+  MDD: 3000
+
+Verificación de la fragmentación (E0)
+  Completitud: suma de fragmentos = 30000; central = 30000
+  Disyunción: filas duplicadas = 0
+  Reconstrucción: firma md5 de la unión = firma de la central -> True
+  Fragmentación derivada: contrarreferencias fuera de su nodo = 0
